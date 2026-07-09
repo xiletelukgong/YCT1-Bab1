@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>🐼 Panda Mandarin Adventure</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+
+background:linear-gradient(135deg,#7dd3fc,#fef9c3);
+
+min-height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+padding:20px;
+
+}
+
+.container{
+
+width:900px;
+max-width:100%;
+
+background:white;
+
+border-radius:30px;
+
+padding:35px;
+
+box-shadow:0 15px 40px rgba(0,0,0,.15);
+
+}
+
+.hidden{
+
+display:none;
+
+}
+
+.title{
+
+text-align:center;
+
+color:#ef4444;
+
+font-size:42px;
+
+font-weight:bold;
+
+}
+
+.subtitle{
+
+text-align:center;
+
+color:#666;
+
+margin-top:10px;
+margin-bottom:25px;
+
+font-size:22px;
+
+}
+
+input{
+
+width:320px;
+
+padding:15px;
+
+font-size:20px;
+
+border-radius:15px;
+
+border:3px solid #38bdf8;
+
+outline:none;
+
+display:block;
+
+margin:auto;
+
+text-align:center;
+
+}
+
+.btn{
+
+padding:14px 28px;
+
+border:none;
+
+border-radius:15px;
+
+font-size:20px;
+
+cursor:pointer;
+
+margin:8px;
+
+color:white;
+
+font-weight:bold;
+
+transition:.2s;
+
+}
+
+.start{
+
+background:#22c55e;
+
+}
+
+.board{
+
+background:#3b82f6;
+
+}
+
+.restart{
+
+background:#f59e0b;
+
+}
+
+.home{
+
+background:#64748b;
+
+}
+
+.btn:hover{
+
+transform:scale(1.05);
+
+}
+
+.center{
+
+text-align:center;
+
+margin-top:25px;
+
+}
+
+.topbar{
+
+display:flex;
+
+justify-content:space-between;
+
+gap:10px;
+
+margin-bottom:20px;
+
+flex-wrap:wrap;
+
+}
+
+.box{
+
+flex:1;
+
+background:#f3f4f6;
+
+padding:15px;
+
+border-radius:15px;
+
+text-align:center;
+
+font-size:22px;
+
+font-weight:bold;
+
+}
+
+#question{
+
+font-size:42px;
+
+text-align:center;
+
+margin:35px 0;
+
+color:#dc2626;
+
+}
+
+.answers{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:18px;
+
+}
+
+.answer{
+
+background:#bae6fd;
+
+padding:20px;
+
+border-radius:18px;
+
+font-size:28px;
+
+cursor:pointer;
+
+text-align:center;
+
+transition:.2s;
+
+}
+
+.answer:hover{
+
+background:#7dd3fc;
+
+transform:scale(1.03);
+
+}
+
+.correct{
+
+background:#4ade80 !important;
+
+color:white;
+
+}
+
+.wrong{
+
+background:#f87171 !important;
+
+color:white;
+
+}
+
+.progress{
+
+margin-top:30px;
+
+width:100%;
+
+height:22px;
+
+background:#ddd;
+
+border-radius:30px;
+
+overflow:hidden;
+
+}
+
+.progressBar{
+
+width:0%;
+
+height:100%;
+
+background:#22c55e;
+
+transition:.3s;
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+margin-top:20px;
+
+}
+
+th{
+
+background:#3b82f6;
+
+color:white;
+
+padding:12px;
+
+}
+
+td{
+
+padding:10px;
+
+text-align:center;
+
+border-bottom:1px solid #ddd;
+
+}
+
+.star{
+
+font-size:45px;
+
+text-align:center;
+
+margin:15px;
+
+}
+
+@media(max-width:700px){
+
+.answers{
+
+grid-template-columns:1fr;
+
+}
+
+.title{
+
+font-size:32px;
+
+}
+
+#question{
+
+font-size:32px;
+
+}
+
+.box{
+
+font-size:18px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HOME -->
+
+<div id="home">
+
+<div class="title">
+🐼 Panda Mandarin Adventure
+</div>
+
+<div class="subtitle">
+YCT 1 Bab 1<br>
+你好 · 老师 · 再见 · 一 二 三 四 五 六 七 八 九 十
+</div>
+
+<input
+id="playerName"
+placeholder="Masukkan Nama">
+
+<div class="center">
+
+<button class="btn start"
+onclick="startGame()">
+
+🎮 Mulai
+
+</button>
+
+<button class="btn board"
+onclick="showLeaderboard()">
+
+🏆 Leaderboard
+
+</button>
+
+</div>
+
+</div>
+
+<!-- GAME -->
+
+<div id="game" class="hidden">
+
+<div class="topbar">
+
+<div class="box">
+
+👤
+<span id="nama"></span>
+
+</div>
+
+<div class="box">
+
+⭐
+<span id="score">0</span>
+
+</div>
+
+<div class="box">
+
+⏰
+<span id="timer">60</span>
+
+</div>
+
+</div>
+
+<h2 id="question">
+
+Loading...
+
+</h2>
+
+<div class="answers">
+
+<div class="answer" id="a0" onclick="checkAnswer(0)"></div>
+
+<div class="answer" id="a1" onclick="checkAnswer(1)"></div>
+
+<div class="answer" id="a2" onclick="checkAnswer(2)"></div>
+
+<div class="answer" id="a3" onclick="checkAnswer(3)"></div>
+
+</div>
+
+<div class="progress">
+
+<div
+class="progressBar"
+id="progressBar">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RESULT -->
+
+<div id="result" class="hidden">
+
+<div class="title">
+
+🎉 游戏结束
+
+</div>
+
+<div
+id="starRating"
+class="star">
+
+⭐⭐⭐
+
+</div>
+
+<h2 align="center">
+
+Selamat
+<span id="resultName"></span>
+
+</h2>
+
+<h2 align="center">
+
+Skor :
+<span id="finalScore"></span>
+
+</h2>
+
+<div class="center">
+
+<button
+class="btn restart"
+onclick="location.reload()">
+
+🔄 Main Lagi
+
+</button>
+
+<button
+class="btn board"
+onclick="showLeaderboard()">
+
+🏆 Leaderboard
+
+</button>
+
+</div>
+
+</div>
+
+<!-- LEADERBOARD -->
+
+<div
+id="leaderboard"
+class="hidden">
+
+<div class="title">
+
+🏆 Leaderboard
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Rank</th>
+
+<th>Nama</th>
+
+<th>Skor</th>
+
+</tr>
+
+</thead>
+
+<tbody
+id="leaderboardBody">
+
+</tbody>
+
+</table>
+
+<div class="center">
+
+<button
+class="btn home"
+onclick="backHome()">
+
+🏠 Home
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+//==============================
+// DATA GAME
+//==============================
+
+const questions = [
+{q:"Halo dalam Mandarin",a:["你好","再见","老师","谢谢"],c:0},
+{q:"Guru dalam Mandarin",a:["学生","老师","爸爸","妈妈"],c:1},
+{q:"Selamat tinggal",a:["你好","再见","老师","谢谢"],c:1},
+{q:"Angka SATU",a:["一","二","三","四"],c:0},
+{q:"Angka DUA",a:["一","二","三","四"],c:1},
+{q:"Angka TIGA",a:["三","五","六","七"],c:0},
+{q:"Angka EMPAT",a:["五","四","七","八"],c:1},
+{q:"Angka LIMA",a:["五","六","七","八"],c:0},
+{q:"Angka ENAM",a:["六","九","十","八"],c:0},
+{q:"Angka TUJUH",a:["六","七","八","九"],c:1},
+{q:"Angka DELAPAN",a:["八","九","十","七"],c:0},
+{q:"Angka SEMBILAN",a:["八","九","十","六"],c:1},
+{q:"Angka SEPULUH",a:["九","十","八","七"],c:1}
+];
+
+let playerName="";
+let score=0;
+let timer=60;
+let current=0;
+let gameQuestions=[];
+let interval=null;
+
+//==============================
+// START GAME
+//==============================
+
+function startGame(){
+
+playerName=document.getElementById("playerName").value.trim();
+
+if(playerName===""){
+alert("Masukkan nama terlebih dahulu!");
+return;
+}
+
+document.getElementById("home").classList.add("hidden");
+document.getElementById("game").classList.remove("hidden");
+
+document.getElementById("nama").innerText=playerName;
+
+score=0;
+current=0;
+
+document.getElementById("score").innerText=score;
+
+// acak soal
+gameQuestions=[...questions];
+
+gameQuestions.sort(()=>Math.random()-0.5);
+
+gameQuestions=gameQuestions.slice(0,10);
+
+timer=60;
+
+document.getElementById("timer").innerText=timer;
+
+showQuestion();
+
+startTimer();
+
+}
+
+//==============================
+// TAMPILKAN SOAL
+//==============================
+
+function showQuestion(){
+
+const q=gameQuestions[current];
+
+document.getElementById("question").innerText=q.q;
+
+for(let i=0;i<4;i++){
+
+const btn=document.getElementById("a"+i);
+
+btn.innerText=q.a[i];
+
+btn.className="answer";
+
+}
+
+document.getElementById("progressBar").style.width=
+((current)/10*100)+"%";
+
+}
+
+//==============================
+// TIMER
+//==============================
+
+function startTimer(){
+
+clearInterval(interval);
+
+interval=setInterval(()=>{
+
+timer--;
+
+document.getElementById("timer").innerText=timer;
+
+if(timer<=0){
+
+finishGame();
+
+}
+
+},1000);
+
+}
+
+//==============================
+// CEK JAWABAN
+//==============================
+
+function checkAnswer(index){
+
+clearInterval(interval);
+
+const q=gameQuestions[current];
+
+const buttons=document.querySelectorAll(".answer");
+
+buttons.forEach(btn=>btn.style.pointerEvents="none");
+
+if(index===q.c){
+
+score+=10;
+
+document.getElementById("score").innerText=score;
+
+buttons[index].classList.add("correct");
+
+beep(700);
+
+}else{
+
+buttons[index].classList.add("wrong");
+
+buttons[q.c].classList.add("correct");
+
+beep(250);
+
+}
+
+setTimeout(()=>{
+
+current++;
+
+if(current>=gameQuestions.length){
+
+finishGame();
+
+}else{
+
+showQuestion();
+
+buttons.forEach(btn=>btn.style.pointerEvents="auto");
+
+startTimer();
+
+}
+
+},800);
+
+}
+
+//==============================
+// SOUND
+//==============================
+
+function beep(freq){
+
+const ctx=new(window.AudioContext||window.webkitAudioContext)();
+
+const osc=ctx.createOscillator();
+
+const gain=ctx.createGain();
+
+osc.type="sine";
+
+osc.frequency.value=freq;
+
+osc.connect(gain);
+
+gain.connect(ctx.destination);
+
+gain.gain.value=0.08;
+
+osc.start();
+
+osc.stop(ctx.currentTime+0.15);
+
+}
+
+//==============================
+// FINISH GAME
+//==============================
+
+function finishGame(){
+
+clearInterval(interval);
+
+document.getElementById("game").classList.add("hidden");
+
+document.getElementById("result").classList.remove("hidden");
+
+document.getElementById("resultName").innerText=playerName;
+
+document.getElementById("finalScore").innerText=score;
+
+let star="⭐";
+
+if(score>=90){
+
+star="⭐⭐⭐";
+
+}else if(score>=70){
+
+star="⭐⭐";
+
+}
+
+document.getElementById("starRating").innerText=star;
+
+saveLeaderboard();
+
+}
+
+//==============================
+// LEADERBOARD
+//==============================
+
+function saveLeaderboard(){
+
+let data = JSON.parse(localStorage.getItem("YCT1Leaderboard")) || [];
+
+data.push({
+    name: playerName,
+    score: score
+});
+
+data.sort((a,b)=>b.score-a.score);
+
+data = data.slice(0,10);
+
+localStorage.setItem(
+    "YCT1Leaderboard",
+    JSON.stringify(data)
+);
+
+}
+
+function showLeaderboard(){
+
+document.getElementById("home").classList.add("hidden");
+document.getElementById("game").classList.add("hidden");
+document.getElementById("result").classList.add("hidden");
+
+document.getElementById("leaderboard").classList.remove("hidden");
+
+const tbody=document.getElementById("leaderboardBody");
+
+tbody.innerHTML="";
+
+let data=JSON.parse(localStorage.getItem("YCT1Leaderboard")) || [];
+
+if(data.length===0){
+
+tbody.innerHTML=`
+<tr>
+<td colspan="3">
+Belum ada skor
+</td>
+</tr>
+`;
+
+return;
+
+}
+
+data.forEach((item,index)=>{
+
+tbody.innerHTML+=`
+<tr>
+<td>${index+1}</td>
+<td>${item.name}</td>
+<td>${item.score}</td>
+</tr>
+`;
+
+});
+
+}
+
+//==============================
+// HOME
+//==============================
+
+function backHome(){
+
+document.getElementById("leaderboard").classList.add("hidden");
+
+document.getElementById("result").classList.add("hidden");
+
+document.getElementById("game").classList.add("hidden");
+
+document.getElementById("home").classList.remove("hidden");
+
+}
+
+//==============================
+// RESET LEADERBOARD (OPSIONAL)
+//==============================
+
+function resetLeaderboard(){
+
+if(confirm("Hapus semua leaderboard?")){
+
+localStorage.removeItem("YCT1Leaderboard");
+
+showLeaderboard();
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
